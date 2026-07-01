@@ -1,0 +1,272 @@
+// CallOlve AI — Database Schema
+//
+// Local dev uses SQLite for zero-setup onboarding. Production uses PostgreSQL —
+// change `provider` to "postgresql" and set DATABASE_URL (see docs/DEPLOYMENT.md).
+//
+// Portability notes:
+// - Enums are modeled as String columns validated by Zod at the service layer
+//   (src/lib/types.ts) so the schema works on both SQLite and PostgreSQL.
+// - Structured JSON payloads (transcripts, actions, timelines) are stored as
+//   serialized String columns with typed (de)serializers in src/lib/json.ts.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────────────────────────── Identity & Tenancy
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  industry  String   @default("general") // restaurant | clinic | real_estate | hotel | support | sales | general
+  plan      String   @default("pro")     // free | starter | pro | enterprise
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members User[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  avatarUrl    String?
+  role         String   @default("owner") // owner | admin | member
+  timezone     String   @default("UTC")
+  language     String   @default("en")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  assistants        Assistant[]
+  calls             Call[]
+  contacts          Contact[]
+  appointments      Appointment[]
+  orders            Order[]
+  leads             Lead[]
+  integrations      Integration[]
+  emergencyContacts EmergencyContact[]
+  sosEvents         SosEvent[]
+  auditLogs         AuditLog[]
+
+  @@index([organizationId])
+}
+
+// ─────────────────────────────────────────────── AI Assistants
+
+model Assistant {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  role          String   @default("receptionist") // receptionist | sales | support | scheduler | order_taker | personal | custom
+  personality   String   @default("professional") // professional | friendly | energetic | calm | witty
+  tone          String   @default("warm")         // formal | casual | warm | direct
+  voice         String   @default("nova")         // voice preset id
+  language      String   @default("en")
+  greeting      String   @default("")
+  systemPrompt  String   @default("")
+  memoryEnabled Boolean  @default(true)
+  memoryNotes   String   @default("[]") // JSON string[] — long-term memory snippets
+  status        String   @default("active") // active | paused | draft
+  phoneNumber   String?  // assigned virtual number
+  color         String   @default("#22d3ee")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  calls Call[]
+
+  @@index([userId])
+}
+
+// ─────────────────────────────────────────────── Calls & Conversations
+
+model Call {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assistantId  String?
+  assistant    Assistant? @relation(fields: [assistantId], references: [id], onDelete: SetNull)
+  direction    String    @default("inbound") // inbound | outbound
+  status       String    @default("completed") // active | completed | missed | scheduled | failed
+  callerName   String?
+  callerPhone  String
+  startedAt    DateTime  @default(now())
+  endedAt      DateTime?
+  durationSec  Int       @default(0)
+  intent       String?   // book_appointment | place_order | support | lead_inquiry | question | emergency | other
+  outcome      String?   // resolved | booked | order_placed | lead_captured | escalated | voicemail | no_answer
+  sentiment    String?   // positive | neutral | negative
+  satisfaction Int?      // 1..5
+  summary      String?
+  transcript   String    @default("[]") // JSON TranscriptTurn[]
+  actions      String    @default("[]") // JSON ExtractedAction[]
+  recordingUrl String?
+  scheduledFor DateTime?
+  createdAt    DateTime  @default(now())
+
+  appointment Appointment?
+  order       Order?
+  lead        Lead?
+
+  @@index([userId, startedAt])
+  @@index([assistantId])
+}
+
+model Contact {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  phone      String
+  email      String?
+  company    String?
+  notes      String    @default("")
+  tags       String    @default("[]") // JSON string[]
+  lastCallAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@unique([userId, phone])
+  @@index([userId])
+}
+
+// ─────────────────────────────────────────────── Business Automation
+
+model Appointment {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  callId       String?  @unique
+  call         Call?    @relation(fields: [callId], references: [id], onDelete: SetNull)
+  contactName  String
+  contactPhone String
+  service      String
+  startsAt     DateTime
+  durationMin  Int      @default(30)
+  status       String   @default("confirmed") // pending | confirmed | completed | cancelled | no_show
+  location     String?
+  notes        String   @default("")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId, startsAt])
+}
+
+model Order {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  callId       String?  @unique
+  call         Call?    @relation(fields: [callId], references: [id], onDelete: SetNull)
+  contactName  String
+  contactPhone String
+  items        String   @default("[]") // JSON OrderItem[] {name, qty, priceCents}
+  totalCents   Int      @default(0)
+  currency     String   @default("USD")
+  type         String   @default("pickup") // delivery | pickup | dine_in
+  status       String   @default("new")    // new | preparing | ready | fulfilled | cancelled
+  notes        String   @default("")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId, createdAt])
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  callId    String?  @unique
+  call      Call?    @relation(fields: [callId], references: [id], onDelete: SetNull)
+  name      String
+  phone     String
+  email     String?
+  source    String   @default("inbound_call")
+  interest  String?
+  score     Int      @default(50) // 0..100
+  status    String   @default("new") // new | qualified | contacted | converted | lost
+  notes     String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
+}
+
+// ─────────────────────────────────────────────── Integrations
+
+model Integration {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider    String    // hubspot | salesforce | zoho | custom_api | google_calendar | outlook_calendar | apple_calendar | whatsapp | instagram | telegram | sms | email
+  category    String    // crm | calendar | messaging
+  status      String    @default("disconnected") // connected | disconnected | error
+  config      String    @default("{}") // JSON provider config (tokens stored encrypted in production)
+  connectedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@unique([userId, provider])
+  @@index([userId])
+}
+
+// ─────────────────────────────────────────────── SOS & Emergency
+
+model EmergencyContact {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  phone        String
+  relationship String   @default("other") // family | friend | colleague | doctor | other
+  priority     Int      @default(1) // 1 = first notified
+  notifyBySms  Boolean  @default(true)
+  notifyByCall Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+}
+
+model SosEvent {
+  id               String    @id @default(cuid())
+  userId           String
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  triggerType      String    @default("manual") // power_button | wearable | voice | app | manual
+  status           String    @default("active") // active | resolved | cancelled | false_alarm
+  startedAt        DateTime  @default(now())
+  resolvedAt       DateTime?
+  lat              Float?
+  lng              Float?
+  address          String?
+  timeline         String    @default("[]") // JSON SosTimelineEntry[] {ts, type, label, detail}
+  recordingUrl     String?
+  videoUrl         String?
+  notifiedContacts String    @default("[]") // JSON string[] of EmergencyContact ids
+  createdAt        DateTime  @default(now())
+
+  @@index([userId, startedAt])
+}
+
+// ─────────────────────────────────────────────── Enterprise / Audit
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String   // e.g. assistant.created, call.deleted, sos.triggered
+  target    String?  // entity id
+  meta      String   @default("{}")
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}

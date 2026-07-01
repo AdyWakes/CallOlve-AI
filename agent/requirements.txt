@@ -1,0 +1,4 @@
+# CallOlve AI phone agent worker (Python 3.9+)
+livekit-agents[openai,deepgram,silero,elevenlabs,azure]~=1.2
+python-dotenv~=1.0
+httpx~=0.27

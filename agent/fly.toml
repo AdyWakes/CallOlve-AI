@@ -1,0 +1,13 @@
+# CallOlve phone worker on Fly.io — Mumbai region, near LiveKit + Azure.
+# Background worker: it dials OUT to LiveKit, so there's no public service.
+# No [http_service] block => the machine stays running 24/7 (no auto-stop).
+app = "callease-worker"
+primary_region = "bom"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024

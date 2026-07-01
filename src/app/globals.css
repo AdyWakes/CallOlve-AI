@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/* ───────────────────────────── CallOlve AI design tokens ── */
+@theme {
+  /* Surfaces */
+  --color-bg: #05060b;
+  --color-panel: #0a0d15;
+  --color-card: #0f1320;
+  --color-raised: #161b2c;
+  --color-line: #1d2336;
+  --color-line-bright: #2c3450;
+
+  /* Text */
+  --color-fg: #eef1f8;
+  --color-mute: #9aa3b8;
+  --color-faint: #5d6680;
+
+  /* Brand */
+  --color-brand: #22d3ee;
+  --color-brand-dim: #0e7490;
+  --color-violet-glow: #8b5cf6;
+
+  /* Status */
+  --color-ok: #34d399;
+  --color-warn: #fbbf24;
+  --color-bad: #f87171;
+
+  /* Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-grotesk), var(--font-inter), ui-sans-serif, sans-serif;
+
+  /* Motion */
+  --animate-fade-up: fade-up 0.6s ease both;
+  --animate-pulse-soft: pulse-soft 3s ease-in-out infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-wave: wave 1.2s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+  @keyframes wave {
+    0%,
+    100% {
+      transform: scaleY(0.35);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+}
+
+/* ───────────────────────────── Base ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-brand) 35%, transparent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-bright) transparent;
+}
+
+/* ───────────────────────────── Helpers ── */
+
+/* Glass panel surface */
+.glass {
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--color-raised) 80%, transparent),
+    color-mix(in oklab, var(--color-panel) 70%, transparent)
+  );
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(12px);
+}
+
+/* Brand gradient text */
+.text-gradient {
+  background: linear-gradient(92deg, #67e8f9 0%, #22d3ee 35%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Soft outer glow for hero/CTA elements */
+.glow-brand {
+  box-shadow:
+    0 0 24px -6px color-mix(in oklab, var(--color-brand) 55%, transparent),
+    0 0 80px -20px color-mix(in oklab, var(--color-violet-glow) 45%, transparent);
+}
+
+/* Faint blueprint grid background */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Radial spotlight behind hero content */
+.bg-spotlight {
+  background:
+    radial-gradient(
+      600px circle at 50% 20%,
+      color-mix(in oklab, var(--color-brand) 14%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      900px circle at 80% 0%,
+      color-mix(in oklab, var(--color-violet-glow) 12%, transparent),
+      transparent 70%
+    );
+}
