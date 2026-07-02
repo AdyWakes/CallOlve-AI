@@ -159,7 +159,7 @@ slides = [
         "title": "Current status and roadmap",
         "lead": "CallOlve AI is not yet the complete production product. The prototype validates the core voice-agent path; funding unlocks the human-grade version.",
         "metrics": [
-            ("LiveKit SIP dispatch", "Verified inbound trunk and dispatch rule route calls to callease-phone."),
+            ("LiveKit SIP dispatch", "Verified inbound trunk and dispatch rule route calls to callolve-phone."),
             ("Azure realtime", "gpt-realtime-2 websocket accepted the session config and runs as the phone LLM/voice path."),
             ("Call persistence", "Test SIP calls generated assistant greetings and were saved through /api/v1/voice/complete."),
             ("Funding roadmap", "Human-realistic voice, lower latency, stronger barge-in, and agents that listen while preparing the next response."),
