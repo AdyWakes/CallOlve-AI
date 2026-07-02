@@ -36,7 +36,7 @@ async function req(method: string, path: string, body?: unknown) {
 async function main() {
   console.log(`Voice E2E against ${BASE}\n`);
 
-  await req("POST", "/api/auth/login", { email: "demo@callease.ai", password: "demo1234" });
+  await req("POST", "/api/auth/login", { email: "demo@callolve.ai", password: "demo1234" });
   const assistants = await req("GET", "/api/v1/assistants");
   const nova = assistants.data?.find((a: any) => a.name === "Nova");
   check("logged in & found Nova", Boolean(nova), assistants.error);

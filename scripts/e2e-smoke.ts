@@ -53,20 +53,20 @@ async function main() {
   check("unauthenticated API returns 401", unauthed.status === 401, unauthed.status);
 
   const badLogin = await req("POST", "/api/auth/login", {
-    email: "demo@callease.ai",
+    email: "demo@callolve.ai",
     password: "wrong-password",
   });
   check("wrong password rejected", badLogin.status === 401, badLogin.status);
 
   const login = await req("POST", "/api/auth/login", {
-    email: "demo@callease.ai",
+    email: "demo@callolve.ai",
     password: "demo1234",
   });
   check("login succeeds", login.status === 200, login.error);
   check("session cookie set", cookie.length > 20);
 
   const me = await req("GET", "/api/auth/me");
-  check("GET /me returns profile", me.data?.email === "demo@callease.ai", me.data);
+  check("GET /me returns profile", me.data?.email === "demo@callolve.ai", me.data);
 
   // ── assistants
   console.log("── Assistants");

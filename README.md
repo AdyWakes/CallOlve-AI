@@ -22,7 +22,7 @@ npm run db:seed    # demo workspace + a month of realistic data
 npm run dev        # http://localhost:3000
 ```
 
-**Demo login:** `demo@callease.ai` / `demo1234`
+**Demo login:** `demo@callolve.ai` / `demo1234`
 
 Then try the flagship flow: **Dashboard → Simulator → Start call** and type
 *"Hi, I'd like to book a table for 4 tomorrow at 7pm"*. Finish the

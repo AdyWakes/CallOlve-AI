@@ -12,7 +12,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         {children}
         <p className="mt-8 text-center text-xs text-faint">
           <Link href="/" className="transition hover:text-mute">
-            ← Back to callease.ai
+            ← Back to callolve.ai
           </Link>
         </p>
       </div>

@@ -56,7 +56,7 @@ export async function requireActorUserId(req: Request): Promise<string> {
   const agentToken = req.headers.get("x-agent-token");
   const configured = process.env.AGENT_API_TOKEN;
   if (agentToken && configured && agentToken === configured) {
-    const email = process.env.AGENT_USER_EMAIL ?? "demo@callease.ai";
+    const email = process.env.AGENT_USER_EMAIL ?? "demo@callolve.ai";
     const user = await db.user.findUnique({ where: { email }, select: { id: true } });
     if (!user) throw new ApiError(401, "Agent account not found");
     return user.id;

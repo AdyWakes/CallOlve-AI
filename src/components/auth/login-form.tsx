@@ -73,7 +73,7 @@ export function LoginForm({ next }: { next?: string }) {
 
       <div className="mt-5 rounded-lg border border-line bg-panel px-3 py-2.5 text-xs text-mute">
         <span className="font-semibold text-fg">Demo account:</span>{" "}
-        demo@callease.ai · demo1234
+        demo@callolve.ai · demo1234
       </div>
 
       <p className="mt-5 text-center text-sm text-mute">

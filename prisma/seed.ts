@@ -1,7 +1,7 @@
 /**
  * CallOlve AI — demo seed.
  *
- * Creates the demo workspace (demo@callease.ai / demo1234) with assistants,
+ * Creates the demo workspace (demo@callolve.ai / demo1234) with assistants,
  * a month of realistic call history, linked appointments/orders/leads,
  * contacts, and integrations.
  *
@@ -212,7 +212,7 @@ async function main() {
   const passwordHash = await hashPassword("demo1234");
   const user = await db.user.create({
     data: {
-      email: "demo@callease.ai",
+      email: "demo@callolve.ai",
       passwordHash,
       name: "Alex Carter",
       phone: "5550100000",
@@ -223,7 +223,7 @@ async function main() {
   });
   await db.user.create({
     data: {
-      email: "maya@callease.ai",
+      email: "maya@callolve.ai",
       passwordHash,
       name: "Maya Patel",
       role: "admin",
@@ -575,7 +575,7 @@ async function main() {
     `Seeded: ${counts.calls} calls (${booked} bookings, ${ordered} orders, ${leads} leads), ` +
       `${counts.appointments} appointments, ${counts.orders} orders, ${counts.leads} leads, ${counts.contacts} contacts.`
   );
-  console.log("Demo login: demo@callease.ai / demo1234");
+  console.log("Demo login: demo@callolve.ai / demo1234");
 }
 
 main()

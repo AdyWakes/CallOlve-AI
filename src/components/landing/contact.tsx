@@ -27,7 +27,7 @@ export function Contact() {
             <ButtonLink href="/signup" size="lg">Start free instead</ButtonLink>
           </div>
           <p className="mt-8 flex items-center gap-2 text-sm text-faint">
-            <Mail className="size-4" /> hello@callease.ai
+            <Mail className="size-4" /> hello@callolve.ai
           </p>
         </div>
 

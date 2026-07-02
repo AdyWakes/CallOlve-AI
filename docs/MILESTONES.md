@@ -70,7 +70,7 @@ settings page (profile, password, plan, team list); seeded demo account.
 `src/app/(app)/dashboard`, `src/app/(app)/settings`, `src/components/shell/*`.
 
 **Expected output:** Full auth round-trip; visiting `/dashboard` logged-out
-redirects to `/login?next=…`; demo login `demo@callease.ai / demo1234`.
+redirects to `/login?next=…`; demo login `demo@callolve.ai / demo1234`.
 
 **How to test:** Signup → land on dashboard → logout → login; tamper the cookie
 and confirm 401/redirect; duplicate-email signup returns a clean field error.
