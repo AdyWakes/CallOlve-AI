@@ -3,7 +3,7 @@
  *
  * Creates the demo workspace (demo@callease.ai / demo1234) with assistants,
  * a month of realistic call history, linked appointments/orders/leads,
- * contacts, integrations, emergency contacts, and SOS history.
+ * contacts, and integrations.
  *
  * Deterministic: same RNG seed → same dataset.
  */
@@ -190,8 +190,6 @@ async function main() {
 
   // wipe (idempotent reseed)
   await db.auditLog.deleteMany();
-  await db.sosEvent.deleteMany();
-  await db.emergencyContact.deleteMany();
   await db.integration.deleteMany();
   await db.lead.deleteMany();
   await db.order.deleteMany();
@@ -556,73 +554,6 @@ async function main() {
     ],
   });
 
-  // emergency contacts + SOS history
-  await db.emergencyContact.createMany({
-    data: [
-      {
-        userId: user.id,
-        name: "Maya Patel",
-        phone: "5550111111",
-        relationship: "family",
-        priority: 1,
-        notifyBySms: true,
-        notifyByCall: true,
-      },
-      {
-        userId: user.id,
-        name: "Dr. Rao",
-        phone: "5550122222",
-        relationship: "doctor",
-        priority: 2,
-        notifyBySms: true,
-        notifyByCall: false,
-      },
-    ],
-  });
-
-  const sosStart = new Date(now - 12 * DAY);
-  sosStart.setHours(22, 14, 0, 0);
-  const iso = (offsetSec: number) => new Date(sosStart.getTime() + offsetSec * 1000).toISOString();
-  await db.sosEvent.create({
-    data: {
-      userId: user.id,
-      triggerType: "power_button",
-      status: "resolved",
-      startedAt: sosStart,
-      resolvedAt: new Date(sosStart.getTime() + 18 * 60 * 1000),
-      lat: 40.7411,
-      lng: -73.9897,
-      address: "Near 23rd St & Broadway, New York, NY",
-      timeline: toJson([
-        { ts: iso(0), type: "triggered", label: "SOS triggered", detail: "Power button pressed 3× on mobile device" },
-        { ts: iso(8), type: "countdown", label: "10-second cancel window passed", detail: "No cancellation — dispatch started" },
-        { ts: iso(12), type: "location", label: "Live location captured", detail: "Accuracy 8m · sharing started" },
-        { ts: iso(15), type: "contact_notified", label: "Maya Patel notified", detail: "SMS with live location + AI call placed" },
-        { ts: iso(24), type: "ai_call", label: "Maya Patel answered the AI call", detail: "Confirmed she is responding" },
-        { ts: iso(30), type: "recording", label: "Audio recording started", detail: "Evidence stored encrypted" },
-        { ts: iso(140), type: "note", label: "Check-in message received", detail: "User responded: situation under control" },
-        { ts: iso(18 * 60), type: "resolved", label: "Event resolved by user", detail: "All-clear sent to notified contacts" },
-      ]),
-      notifiedContacts: toJson(["Maya Patel"]),
-    },
-  });
-
-  const falseAlarm = new Date(now - 25 * DAY);
-  falseAlarm.setHours(9, 5, 0, 0);
-  await db.sosEvent.create({
-    data: {
-      userId: user.id,
-      triggerType: "app",
-      status: "cancelled",
-      startedAt: falseAlarm,
-      resolvedAt: new Date(falseAlarm.getTime() + 9 * 1000),
-      timeline: toJson([
-        { ts: falseAlarm.toISOString(), type: "triggered", label: "SOS triggered", detail: "Mobile app button" },
-        { ts: new Date(falseAlarm.getTime() + 9 * 1000).toISOString(), type: "cancelled", label: "Cancelled within grace window", detail: "No contacts notified" },
-      ]),
-    },
-  });
-
   await db.auditLog.createMany({
     data: [
       { userId: user.id, action: "account.created", target: user.id, createdAt: new Date(now - 32 * DAY) },
@@ -630,8 +561,6 @@ async function main() {
       { userId: user.id, action: "assistant.created", target: aria.id, createdAt: new Date(now - 30 * DAY) },
       { userId: user.id, action: "assistant.created", target: sage.id, createdAt: new Date(now - 28 * DAY) },
       { userId: user.id, action: "integration.connected", target: "google_calendar", createdAt: new Date(now - 20 * DAY) },
-      { userId: user.id, action: "sos.triggered", target: "power_button", createdAt: sosStart },
-      { userId: user.id, action: "sos.resolved", createdAt: new Date(sosStart.getTime() + 18 * 60 * 1000) },
     ],
   });
 

@@ -31,7 +31,7 @@ const testimonials = [
   {
     name: "Dev Patel",
     role: "Founder (solo)",
-    text: "It's my receptionist, scheduler, and safety net. The SOS feature alone is worth it — my family has live location if anything happens.",
+    text: "It's my receptionist and scheduler in one — it answers every call, books jobs, and takes messages so I never miss a customer.",
   },
 ];
 

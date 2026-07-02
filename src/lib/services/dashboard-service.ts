@@ -14,7 +14,6 @@ export async function getDashboardData(userId: string) {
     newLeads,
     recentCalls,
     connectedIntegrations,
-    activeSos,
     satisfactionAgg,
   ] = await Promise.all([
     db.call.count({ where: { userId, startedAt: { gte: startOfToday } } }),
@@ -44,10 +43,6 @@ export async function getDashboardData(userId: string) {
       include: { assistant: { select: { name: true, color: true } } },
     }),
     db.integration.count({ where: { userId, status: "connected" } }),
-    db.sosEvent.findFirst({
-      where: { userId, status: "active" },
-      orderBy: { startedAt: "desc" },
-    }),
     db.call.aggregate({
       where: { userId, satisfaction: { not: null } },
       _avg: { satisfaction: true },
@@ -63,7 +58,6 @@ export async function getDashboardData(userId: string) {
     newLeads,
     recentCalls,
     connectedIntegrations,
-    activeSos,
     avgSatisfaction: satisfactionAgg._avg.satisfaction,
   };
 }

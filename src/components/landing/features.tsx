@@ -7,7 +7,6 @@ import {
   PhoneCall,
   Plug,
   ShoppingBag,
-  Siren,
   Target,
 } from "lucide-react";
 
@@ -51,11 +50,6 @@ const features = [
     icon: Plug,
     title: "Deep integrations",
     text: "HubSpot, Salesforce, Zoho, calendars, WhatsApp, SMS, email — AI actions sync everywhere you work.",
-  },
-  {
-    icon: Siren,
-    title: "SOS emergency response",
-    text: "Triple-press trigger, wearable support, live location sharing, and automatic emergency-contact alerts.",
   },
 ];
 

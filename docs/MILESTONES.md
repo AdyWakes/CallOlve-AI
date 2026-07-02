@@ -211,36 +211,7 @@ data in dev).
 
 ---
 
-## Milestone 9 — SOS & emergency module
-
-**Goal:** Production-shaped emergency pipeline with a live, demoable web
-experience, designed around the existing Flutter mobile client as trigger
-device.
-
-**Features:** Emergency contacts CRUD (priority, SMS/call channels); SOS
-trigger with cancel-countdown; dispatch pipeline (timeline events: triggered →
-location captured → contacts notified → AI call placed → escalation); live
-timeline UI with map placeholder + media capture placeholders; resolve/cancel/
-false-alarm; safety history; `docs/SOS.md` covering power-button/wearable/voice
-triggers, ambulance/police routing architecture, and mobile-client contract.
-
-**Files/folders:** `src/lib/sos/*`, `src/lib/services/sos-service.ts`,
-`src/app/(app)/sos/*`, `src/app/api/v1/sos/*`, `docs/SOS.md`.
-
-**Expected output:** Triggering SOS produces a multi-step timeline notifying
-seeded emergency contacts; history persists.
-
-**How to test:** Add 2 contacts → trigger → cancel within countdown (event
-cancelled) → trigger again, let it run → timeline populates → resolve → check
-history.
-
-**Risks:** Mistaking the simulation for a real emergency service (explicit
-"simulation" labeling in UI); countdown race conditions (server is source of
-truth for status).
-
----
-
-## Milestone 10 — Database, API & documentation cleanup
+## Milestone 9 — Database, API & documentation cleanup
 
 **Goal:** Ship-ready repo: docs complete, API stable, production build green.
 

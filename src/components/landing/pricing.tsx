@@ -30,7 +30,6 @@ const tiers = [
       "Orders, leads & full automation suite",
       "Analytics center",
       "CRM, calendar & messaging integrations",
-      "SOS emergency module",
       "Priority support",
     ],
     cta: "Start free trial",

@@ -1,7 +1,7 @@
 /**
  * End-to-end API smoke test against a running server (default
  * http://localhost:3000). Exercises auth, assistants, the full simulator
- * booking flow, analytics, integrations, and the SOS lifecycle.
+ * booking flow, analytics, and integrations.
  *
  * Run: npx tsx scripts/e2e-smoke.ts
  * Requires: npm run db:seed (demo account), server running.
@@ -142,30 +142,6 @@ async function main() {
     "hubspot disconnects",
     after2.data?.find((i: any) => i.provider === "hubspot")?.status === "disconnected"
   );
-
-  // ── SOS lifecycle
-  console.log("── SOS");
-  const sos = await req("POST", "/api/v1/sos/events", {
-    triggerType: "manual",
-    lat: 40.74,
-    lng: -73.98,
-  });
-  check("SOS triggers", sos.status === 201 && sos.data?.status === "active", sos.error);
-  const timeline = JSON.parse(sos.data?.timeline ?? "[]");
-  check("dispatch timeline built", timeline.length >= 4, timeline.length);
-  check(
-    "contacts in dispatch plan",
-    timeline.some((t: any) => t.type === "contact_notified"),
-    timeline.map((t: any) => t.type)
-  );
-
-  const second = await req("POST", "/api/v1/sos/events", { triggerType: "app" });
-  check("no double-dispatch (same event returned)", second.data?.id === sos.data?.id);
-
-  const resolved = await req("PATCH", `/api/v1/sos/events/${sos.data.id}`, {
-    status: "resolved",
-  });
-  check("SOS resolves", resolved.data?.status === "resolved", resolved.error);
 
   // ── validation
   console.log("── Validation");

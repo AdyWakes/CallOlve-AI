@@ -43,7 +43,7 @@ const PATTERNS: Record<Exclude<Intent, "other">, { re: RegExp; weight: number }[
     { re: /\b(wifi|pets?|wheelchair|card|cash)\b/i, weight: 1 },
   ],
   emergency: [
-    { re: /\b(emergency|urgent(ly)?\s+help|sos)\b/i, weight: 5 },
+    { re: /\b(emergency|urgent(ly)?\s+help)\b/i, weight: 5 },
     { re: /\b(hurt|injured|accident|bleeding|attack|unsafe|danger)\b/i, weight: 4 },
   ],
 };

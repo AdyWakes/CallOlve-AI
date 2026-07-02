@@ -8,22 +8,22 @@
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                              CLIENTS                                     │
-│  Web App (Next.js)   Mobile SOS App (Flutter, ../)   Wearables   PSTN   │
+│  Web App (Next.js)   Browser Voice (Web Speech)      Wearables   PSTN   │
 └───────────────┬──────────────────┬──────────────────────┬───────────────┘
                 │ HTTPS            │ REST / Push          │ SIP/WebRTC
 ┌───────────────▼──────────────────▼──────────────────────▼───────────────┐
 │                        API LAYER  (/api/v1/*)                            │
 │   Auth · Assistants · Calls · Simulator · Appointments · Orders ·        │
-│   Leads · Analytics · Integrations · SOS · Webhooks                      │
+│   Leads · Analytics · Integrations · Webhooks                            │
 ├──────────────────────────────────────────────────────────────────────────┤
 │                        SERVICE LAYER  (src/lib/services)                  │
 │   Pure business logic. No HTTP concerns. Shared by API routes,           │
 │   server components, and future workers.                                 │
 ├────────────────┬───────────────────────────┬─────────────────────────────┤
-│ AI ENGINE      │ INTEGRATION ADAPTERS      │ SOS PIPELINE                │
-│ (src/lib/ai)   │ (src/lib/integrations)    │ (src/lib/sos)               │
-│ intent · slots │ CRM · Calendar · Messaging│ triggers · dispatch ·       │
-│ actions ·      │ uniform adapter interface │ timeline · escalation       │
+│ AI ENGINE      │ INTEGRATION ADAPTERS      │ TELEPHONY GATEWAY           │
+│ (src/lib/ai)   │ (src/lib/integrations)    │ (agent/ voice worker)       │
+│ intent · slots │ CRM · Calendar · Messaging│ LiveKit rooms · Twilio SIP  │
+│ actions ·      │ uniform adapter interface │ streaming STT · LLM · TTS   │
 │ persona        │ per category              │                             │
 ├────────────────┴───────────────────────────┴─────────────────────────────┤
 │                        DATA LAYER (Prisma)                                │
@@ -35,8 +35,8 @@
 ## 2. Design principles
 
 1. **API-first.** Every capability is exposed through versioned REST endpoints
-   (`/api/v1/*`). The web UI is just the first client; the Flutter SOS app,
-   wearables, and telephony webhooks consume the same API.
+   (`/api/v1/*`). The web UI is just the first client; wearables and
+   telephony webhooks consume the same API.
 2. **Service layer owns business logic.** API routes are thin: parse → validate
    (Zod) → call service → serialize. Services never import `next/*`, so they can
    be lifted into standalone microservices without rewrites.
@@ -49,7 +49,7 @@
    typed JSON serializers (`src/lib/json.ts`).
 5. **Microservice-ready seams.** The monolith is sliced along the lines we would
    cut first at scale: `ai-engine`, `telephony-gateway`, `integration-hub`,
-   `sos-dispatch`, `analytics`. Each lives in its own folder with its own types.
+   and `analytics`. Each lives in its own folder with its own types.
 
 ## 3. Module map
 
@@ -62,7 +62,6 @@
 | Automation Suite | `(app)/appointments`, `orders`, `leads` | `/api/v1/{appointments,orders,leads}` | `services/*` |
 | Analytics | `(app)/analytics` | `/api/v1/analytics/overview` | `services/analytics-service` |
 | Integrations | `(app)/integrations` | `/api/v1/integrations*` | `lib/integrations/*` |
-| SOS | `(app)/sos` | `/api/v1/sos/*` | `lib/sos/*`, `services/sos-service` |
 | Settings/Team | `(app)/settings` | `/api/v1/settings/*` | `services/user-service` |
 
 ## 4. The AI conversation engine
@@ -121,15 +120,7 @@ produces today**, which is why the rest of the platform is already wired for it.
 Outbound & scheduled calls: a queue worker (Redis/BullMQ) picks up `Call` rows
 with `status=scheduled`, dials via Twilio, runs the same loop.
 
-## 6. SOS & emergency architecture
-
-See [SOS.md](./SOS.md) for the full design. Summary: triggers (triple power
-button / wearable / voice / app — handled by the Flutter client in `../`) post
-to `/api/v1/sos/events`; the dispatch pipeline notifies emergency contacts in
-priority order, starts location + media capture, routes an AI emergency call,
-and records everything on an append-only timeline.
-
-## 7. Security model
+## 6. Security model
 
 - Passwords: bcrypt (cost 10). Sessions: signed JWT (jose, HS256) in an
   `HttpOnly`, `SameSite=Lax`, `Secure` (prod) cookie, 7-day expiry.
@@ -143,7 +134,7 @@ and records everything on an append-only timeline.
 - Future: org-level RBAC (owner/admin/member roles are already on the model),
   API keys with hashed storage, rate limiting via Redis.
 
-## 8. Scaling path
+## 7. Scaling path
 
 | Stage | Move |
 |---|---|

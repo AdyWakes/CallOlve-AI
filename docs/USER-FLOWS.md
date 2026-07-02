@@ -47,28 +47,14 @@ AI captures lead (name, phone, interest) + scores it (0–100, slot completeness
 & buying signals) → sales reviews pipeline → qualified → contacted → converted
 ```
 
-## 7. SOS emergency
-```
-Trigger (triple power button / wearable / voice / app button — mobile client)
-→ POST /api/v1/sos/events
-→ dispatch pipeline:
-   1. event created, countdown grace period (cancel window for false alarms)
-   2. location captured & shared
-   3. emergency contacts notified in priority order (SMS + AI call)
-   4. audio/video capture started (mobile client)
-   5. optional routing to emergency services (region-dependent)
-→ live safety timeline updates until resolved/cancelled
-→ event archived in safety history
-```
-
-## 8. Connect an integration
+## 7. Connect an integration
 ```
 Integrations → provider card (HubSpot / Google Calendar / WhatsApp / …)
 → Connect → OAuth (mocked in dev) → status "connected"
 → AI actions now sync: CRM updates, calendar event creation, message sending
 ```
 
-## 9. Team management (enterprise)
+## 8. Team management (enterprise)
 ```
 Settings → Team → invite member (email, role admin/member)
 → member sees org assistants & calls per role permissions

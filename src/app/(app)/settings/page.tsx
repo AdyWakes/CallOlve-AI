@@ -19,7 +19,6 @@ const PLAN_FEATURES: Record<string, string[]> = {
     "1,000 calls / month",
     "Full automation suite",
     "Analytics & integrations",
-    "SOS emergency module",
   ],
   enterprise: ["Unlimited everything", "SSO & audit logs", "Dedicated infrastructure"],
 };

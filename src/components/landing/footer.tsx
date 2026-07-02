@@ -16,7 +16,6 @@ const columns: { title: string; links: { label: string; href: string }[] }[] = [
       { label: "AI Assistants", href: "/signup" },
       { label: "Call Analytics", href: "/signup" },
       { label: "Integrations", href: "/signup" },
-      { label: "SOS Emergency", href: "/signup" },
     ],
   },
   {

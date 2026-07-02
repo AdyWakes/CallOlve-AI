@@ -24,8 +24,6 @@ import {
   PhoneMissed,
   Radio,
   ShoppingBag,
-  Siren,
-  Star,
   Target,
 } from "lucide-react";
 
@@ -53,18 +51,6 @@ export default async function DashboardPage() {
           </>
         }
       />
-
-      {data.activeSos ? (
-        <Link
-          href="/sos"
-          className="mb-6 flex items-center gap-3 rounded-2xl border border-bad/40 bg-bad/10 px-5 py-4 transition hover:bg-bad/15"
-        >
-          <Siren className="size-5 animate-pulse-soft text-bad" />
-          <span className="text-sm font-semibold text-bad">
-            SOS EVENT ACTIVE — emergency response in progress. Tap to open the live timeline.
-          </span>
-        </Link>
-      ) : null}
 
       {isFresh ? (
         <Card className="mb-6">
@@ -272,12 +258,6 @@ export default async function DashboardPage() {
               <div className="flex items-center justify-between">
                 <span className="text-mute">Integrations connected</span>
                 <span className="font-medium text-fg">{data.connectedIntegrations}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-mute">SOS protection</span>
-                <span className="inline-flex items-center gap-1.5 font-medium text-ok">
-                  <Star className="size-3.5" /> Armed
-                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-mute">Average rating</span>

@@ -56,8 +56,6 @@ model User {
   orders            Order[]
   leads             Lead[]
   integrations      Integration[]
-  emergencyContacts EmergencyContact[]
-  sosEvents         SosEvent[]
   auditLogs         AuditLog[]
 
   @@index([organizationId])
@@ -220,50 +218,13 @@ model Integration {
   @@index([userId])
 }
 
-// ─────────────────────────────────────────────── SOS & Emergency
-
-model EmergencyContact {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name         String
-  phone        String
-  relationship String   @default("other") // family | friend | colleague | doctor | other
-  priority     Int      @default(1) // 1 = first notified
-  notifyBySms  Boolean  @default(true)
-  notifyByCall Boolean  @default(true)
-  createdAt    DateTime @default(now())
-
-  @@index([userId])
-}
-
-model SosEvent {
-  id               String    @id @default(cuid())
-  userId           String
-  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  triggerType      String    @default("manual") // power_button | wearable | voice | app | manual
-  status           String    @default("active") // active | resolved | cancelled | false_alarm
-  startedAt        DateTime  @default(now())
-  resolvedAt       DateTime?
-  lat              Float?
-  lng              Float?
-  address          String?
-  timeline         String    @default("[]") // JSON SosTimelineEntry[] {ts, type, label, detail}
-  recordingUrl     String?
-  videoUrl         String?
-  notifiedContacts String    @default("[]") // JSON string[] of EmergencyContact ids
-  createdAt        DateTime  @default(now())
-
-  @@index([userId, startedAt])
-}
-
 // ─────────────────────────────────────────────── Enterprise / Audit
 
 model AuditLog {
   id        String   @id @default(cuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  action    String   // e.g. assistant.created, call.deleted, sos.triggered
+  action    String   // e.g. assistant.created, call.deleted, integration.connected
   target    String?  // entity id
   meta      String   @default("{}")
   createdAt DateTime @default(now())

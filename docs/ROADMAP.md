@@ -2,7 +2,7 @@
 
 ## Phase 0 — Foundation (this repo)
 - ✅ Full-stack platform: auth, assistants, calls, simulator engine,
-  automation suite, analytics, integrations hub, SOS pipeline
+  automation suite, analytics, integrations hub
 - ✅ Deterministic conversation engine defining the LLM/voice adapter contract
 - ✅ API-first surface (`/api/v1`) consumed by web; ready for mobile/wearables
 
@@ -27,15 +27,7 @@
 - Smart reminders; AI-suggested prompt improvements from call outcomes
 - Multi-agent workflows (receptionist → books with scheduler agent → confirms)
 
-## Phase 4 — SOS productization
-- Flutter app (../) wired to `/api/v1/sos`: power-button/shake triggers,
-  background location, audio/video evidence upload
-- Wearable SDKs (Apple Watch, Wear OS) one-press trigger
-- Voice wake-word emergency activation during any call
-- Regional emergency routing partners (ambulance/police APIs where available)
-- Guardian mode: scheduled check-ins that auto-trigger on miss
-
-## Phase 5 — Enterprise & scale
+## Phase 4 — Enterprise & scale
 - Organizations: SSO (SAML/OIDC), SCIM, granular RBAC, department assistants
 - Audit log UI, retention policies, data residency, SOC 2 program
 - Usage-based billing (Stripe), plan limits, admin analytics

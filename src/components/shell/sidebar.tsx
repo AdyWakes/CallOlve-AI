@@ -17,7 +17,6 @@ import {
   Radio,
   Settings,
   ShoppingBag,
-  Siren,
   Target,
   X,
 } from "lucide-react";
@@ -54,7 +53,6 @@ const groups: {
     title: "Platform",
     items: [
       { href: "/integrations", label: "Integrations", icon: Plug },
-      { href: "/sos", label: "SOS Emergency", icon: Siren },
       { href: "/settings", label: "Settings", icon: Settings },
     ],
   },
@@ -82,8 +80,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
                       "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition",
                       active
                         ? "bg-brand/10 font-medium text-brand"
-                        : "text-mute hover:bg-raised/70 hover:text-fg",
-                      item.href === "/sos" && !active && "text-bad/80 hover:text-bad"
+                        : "text-mute hover:bg-raised/70 hover:text-fg"
                     )}
                   >
                     <item.icon className="size-4 shrink-0" />

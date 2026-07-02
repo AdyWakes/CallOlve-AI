@@ -26,10 +26,6 @@ const faqs = [
     q: "Is my call data secure?",
     a: "All data is encrypted in transit and at rest, scoped strictly to your account, and never used to train shared models. Enterprise plans add SSO, audit logs, retention controls, and data-residency options.",
   },
-  {
-    q: "How does the SOS emergency module work?",
-    a: "A triple press of the power button (or a wearable / voice trigger) starts an emergency event: your live location is shared, emergency contacts are alerted by SMS and AI call in priority order, and audio/video evidence can be captured — all recorded on a tamper-evident timeline.",
-  },
 ];
 
 export function Faq() {

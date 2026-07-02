@@ -73,7 +73,6 @@ Run behind a TLS-terminating proxy (Caddy/nginx). The session cookie is
 - [ ] Rate limiting on `/api/auth/*` (Redis) before public launch
 - [ ] Error monitoring (Sentry) + uptime checks on `/` and `/api/auth/me`
 - [ ] Integration credentials encrypted at rest (KMS) when real OAuth lands
-- [ ] SOS: keep simulation labeling until real dispatch channels are certified
 - [ ] Add ESLint/Prettier + CI typecheck/build gates (see ROADMAP debt register)
 
 ## 6. Scaling waypoints

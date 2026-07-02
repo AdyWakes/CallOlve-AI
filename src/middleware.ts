@@ -14,7 +14,6 @@ const APP_PREFIXES = [
   "/leads",
   "/analytics",
   "/integrations",
-  "/sos",
   "/settings",
 ];
 

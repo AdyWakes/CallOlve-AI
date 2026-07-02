@@ -69,17 +69,6 @@ All request bodies are validated with Zod; allowed enum values live in
 | POST | `/api/v1/integrations` | `{ provider }` → connect (mock OAuth in dev) |
 | DELETE | `/api/v1/integrations/:provider` | Disconnect |
 
-## SOS
-
-| Method | Path | Notes |
-|---|---|---|
-| GET/POST | `/api/v1/sos/contacts` | Emergency contact list / add |
-| PATCH/DELETE | `/api/v1/sos/contacts/:id` | Edit priority/channels, remove |
-| GET | `/api/v1/sos/events` | Safety history |
-| POST | `/api/v1/sos/events` | Trigger SOS: `{ triggerType, lat?, lng?, address? }` → runs dispatch pipeline, returns event with timeline |
-| GET | `/api/v1/sos/events/:id` | Event detail + timeline |
-| PATCH | `/api/v1/sos/events/:id` | Resolve / cancel / mark false alarm |
-
 ## Settings
 
 | Method | Path | Notes |

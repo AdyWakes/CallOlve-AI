@@ -12,8 +12,6 @@ import type {
   Outcome,
   Personality,
   Sentiment,
-  SosStatus,
-  SosTrigger,
   Tone,
   Voice,
 } from "./types";
@@ -103,21 +101,6 @@ export const LEAD_STATUS_META: Record<LeadStatus, StatusMeta> = {
   lost: { label: "Lost", variant: "default" },
 };
 
-export const SOS_STATUS_META: Record<SosStatus, StatusMeta> = {
-  active: { label: "ACTIVE", variant: "bad" },
-  resolved: { label: "Resolved", variant: "ok" },
-  cancelled: { label: "Cancelled", variant: "default" },
-  false_alarm: { label: "False alarm", variant: "warn" },
-};
-
-export const SOS_TRIGGER_META: Record<SosTrigger, string> = {
-  power_button: "Power button (triple press)",
-  wearable: "Wearable device",
-  voice: "Voice activation",
-  app: "Mobile app",
-  manual: "Manual (dashboard)",
-};
-
 // ─────────────────────────────────────────────── Assistant configuration
 
 export const ROLE_META: Record<AssistantRole, { label: string; description: string }> = {
@@ -182,12 +165,4 @@ export const LANGUAGE_META: Record<string, string> = {
   de: "German",
   hi: "Hindi",
   pt: "Portuguese",
-};
-
-export const RELATIONSHIP_META: Record<string, string> = {
-  family: "Family",
-  friend: "Friend",
-  colleague: "Colleague",
-  doctor: "Doctor",
-  other: "Other",
 };

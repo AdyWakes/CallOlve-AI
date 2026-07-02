@@ -188,40 +188,6 @@ export const INTEGRATION_PROVIDERS = [
 ] as const;
 export type IntegrationProvider = (typeof INTEGRATION_PROVIDERS)[number];
 
-// ─────────────────────────────────────────────── SOS
-
-export const SOS_TRIGGERS = [
-  "power_button",
-  "wearable",
-  "voice",
-  "app",
-  "manual",
-] as const;
-export type SosTrigger = (typeof SOS_TRIGGERS)[number];
-
-export const SOS_STATUSES = ["active", "resolved", "cancelled", "false_alarm"] as const;
-export type SosStatus = (typeof SOS_STATUSES)[number];
-
-export interface SosTimelineEntry {
-  /** ISO timestamp */
-  ts: string;
-  type:
-    | "triggered"
-    | "countdown"
-    | "location"
-    | "contact_notified"
-    | "ai_call"
-    | "recording"
-    | "escalation"
-    | "note"
-    | "resolved"
-    | "cancelled";
-  label: string;
-  detail?: string;
-}
-
-export const RELATIONSHIPS = ["family", "friend", "colleague", "doctor", "other"] as const;
-
 // ─────────────────────────────────────────────── Zod request schemas
 
 export const signupSchema = z.object({
@@ -333,22 +299,6 @@ export const leadCreateSchema = z.object({
 });
 
 export const leadUpdateSchema = leadCreateSchema.partial();
-
-export const emergencyContactSchema = z.object({
-  name: z.string().trim().min(1).max(80),
-  phone: z.string().trim().min(3).max(24),
-  relationship: z.enum(RELATIONSHIPS).default("other"),
-  priority: z.number().int().min(1).max(10).default(1),
-  notifyBySms: z.boolean().default(true),
-  notifyByCall: z.boolean().default(true),
-});
-
-export const sosTriggerSchema = z.object({
-  triggerType: z.enum(SOS_TRIGGERS).default("manual"),
-  lat: z.number().min(-90).max(90).optional(),
-  lng: z.number().min(-180).max(180).optional(),
-  address: z.string().trim().max(240).optional(),
-});
 
 export const integrationConnectSchema = z.object({
   provider: z.enum(INTEGRATION_PROVIDERS),

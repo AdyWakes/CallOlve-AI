@@ -11,8 +11,6 @@ User 1──* Assistant 1──* Call
 User 1──* Call ──1? Appointment / Order / Lead   (one business object per call)
 User 1──* Contact
 User 1──* Integration            (unique per provider)
-User 1──* EmergencyContact
-User 1──* SosEvent
 User 1──* AuditLog
 ```
 
@@ -50,9 +48,6 @@ User 1──* AuditLog
 ### Platform
 - **Integration** — one row per `(userId, provider)`; `category` crm/calendar/
   messaging; `config` JSON (encrypted in prod); `status` connected/disconnected/error.
-- **EmergencyContact** — prioritized notification list with per-channel flags.
-- **SosEvent** — trigger type, status, geo (`lat`/`lng`/`address`), media URLs,
-  `timeline` (append-only JSON `SosTimelineEntry[]`), notified contact ids.
 - **AuditLog** — `action`, `target`, `meta` for enterprise compliance.
 
 ## Conventions
@@ -72,7 +67,7 @@ User 1──* AuditLog
 ## Switching dev → PostgreSQL
 
 1. In `prisma/schema.prisma`, set `provider = "postgresql"`.
-2. Set `DATABASE_URL=postgresql://user:pass@host:5432/callease`.
+2. Set `DATABASE_URL=postgresql://user:pass@host:5432/callolve`.
 3. `npx prisma migrate dev --name init` (use migrations, not `db push`, from
    this point on).
 4. Optional hardening: convert JSON string columns to `Json` type and string
@@ -82,5 +77,5 @@ User 1──* AuditLog
 
 Hot paths covered: `Call(userId, startedAt)` for log lists & analytics ranges,
 `Appointment(userId, startsAt)` for calendar views, `Order/Lead(userId,
-createdAt)` for pipelines, `SosEvent(userId, startedAt)` for safety history,
-unique `(userId, provider)` and `(userId, phone)` to prevent duplicates.
+createdAt)` for pipelines, and unique `(userId, provider)` and
+`(userId, phone)` to prevent duplicates.

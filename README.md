@@ -1,8 +1,10 @@
 # CallOlve AI
 
 **The operating system for voice communication.** AI assistants that answer
-your phone, book appointments, take orders, qualify leads, resolve support
-issues — and keep you safe with a built-in SOS emergency pipeline.
+your phone, book appointments, take orders, qualify leads, and resolve
+support issues — 24/7, in any language.
+
+**Live demo:** [callolve-ai.vercel.app](https://callolve-ai.vercel.app)
 
 Built with Next.js 15, TypeScript, Tailwind CSS v4, Prisma, and a
 deterministic AI conversation engine that runs end-to-end with **zero API
@@ -41,7 +43,6 @@ update.
 | **Automation** | Appointments (lifecycle), Orders (kitchen flow), Leads (scored pipeline) — all fed by the engine |
 | **Analytics** | Volume, intents, outcomes, sentiment, CSAT, revenue, busiest hours — computed live, custom SVG charts |
 | **Integrations** | CRM / calendar / messaging hub with uniform adapter contracts and mock providers |
-| **SOS Emergency** | Trigger → locate → alert contacts → AI calls → evidence capture, with live timeline and safety history |
 | **Enterprise-lite** | Organizations, roles, team list, audit log |
 
 ## Scripts
@@ -62,7 +63,7 @@ update.
 ```
 CallOlve-AI/
 ├─ docs/                    Architecture, database, API, flows, milestones,
-│                           roadmap, SOS design, deployment
+│                           roadmap, deployment
 ├─ prisma/                  schema.prisma + seed.ts
 ├─ scripts/                 engine-smoke.ts (dialog regression tests)
 └─ src/
@@ -71,14 +72,13 @@ CallOlve-AI/
    │  ├─ (auth)/            Login / signup
    │  ├─ (app)/             Dashboard, assistants, calls, simulator,
    │  │                     appointments, orders, leads, analytics,
-   │  │                     integrations, sos, settings
+   │  │                     integrations, settings
    │  └─ api/               /api/auth/* and versioned /api/v1/* + webhooks
    ├─ components/           ui primitives · landing · shell · feature modules
    ├─ lib/
    │  ├─ ai/                engine, intents, slots, persona, executor, presets
    │  ├─ auth/              sessions (jose), passwords (bcrypt), current user
    │  ├─ integrations/      adapter contracts, registry, mock providers
-   │  ├─ sos/               dispatch pipeline
    │  ├─ services/          business logic (no HTTP) — one per module
    │  └─ types.ts           domain vocabulary: enums + Zod schemas
    └─ middleware.ts          edge route protection
@@ -100,7 +100,6 @@ CRMs, calendars, and messaging all sit behind swappable adapters. Details:
 - [Architecture](docs/ARCHITECTURE.md) · [Database](docs/DATABASE.md) ·
   [API reference](docs/API.md) · [User flows](docs/USER-FLOWS.md)
 - [Milestones](docs/MILESTONES.md) (how this was built, with test plans)
-- [SOS emergency design](docs/SOS.md) — including the Flutter mobile client contract
 - [Live voice setup](docs/VOICE-SETUP.md) — Phase 1 (free browser voice) → Phase 2 (real phone number)
 - [Phone agent runbook](docs/PHONE-AGENT.md) — wire the Twilio number to the LiveKit + Deepgram worker
 - [Deployment](docs/DEPLOYMENT.md) · [Roadmap](docs/ROADMAP.md)
@@ -116,5 +115,5 @@ CRMs, calendars, and messaging all sit behind swappable adapters. Details:
 
 ---
 
-*CallOlve AI — preview build. The conversation engine, integrations, and SOS
-dispatch run in simulation mode until provider credentials are configured.*
+*CallOlve AI — preview build. The conversation engine and integrations run in
+simulation mode until provider credentials are configured.*
