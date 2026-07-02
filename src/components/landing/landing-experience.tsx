@@ -370,7 +370,7 @@ export default function LandingExperience() {
                     <span style={s("display:inline-flex;width:44px;height:44px;align-items:center;justify-content:center;border-radius:12px;background:linear-gradient(140deg,#2dd4ee,#6366f1 55%,#8b5cf6);color:#ffffff;font-family:" + DISPLAY + ";font-weight:700;font-size:16px;box-shadow:0 6px 20px -6px rgba(99,102,241,.75)")}>N</span>
                     <div>
                       <p style={s("margin:0;font-family:" + DISPLAY + ";font-size:14px;font-weight:600")}>Nova · Receptionist AI</p>
-                      <p style={s("margin:2px 0 0;display:flex;align-items:center;gap:6px;font-size:12px;color:#c8c8cc")}><span style={s("position:relative;display:inline-flex;width:8px;height:8px")}><span style={s("position:absolute;inset:0;border-radius:50%;background:#22c55e;opacity:.6;animation:cePing 1.6s ease-out infinite")} /><span style={s("position:relative;width:8px;height:8px;border-radius:50%;background:#22c55e")} /></span> Live call · 00:42</p>
+                      <p style={s("margin:2px 0 0;display:flex;align-items:center;gap:6px;font-size:12px;color:#c8c8cc")}><span style={s("position:relative;display:inline-flex;width:8px;height:8px")}><span style={s("position:absolute;inset:0;border-radius:50%;background:#2dd4ee;opacity:.6;animation:cePing 1.6s ease-out infinite")} /><span style={s("position:relative;width:8px;height:8px;border-radius:50%;background:#2dd4ee")} /></span> Live call · 00:42</p>
                     </div>
                   </div>
                   <span style={s("border-radius:9999px;border:1px solid rgba(99,102,241,.4);background:rgba(99,102,241,.16);color:#a5b4fc;padding:3px 10px;font-size:11px;font-weight:600")}>Inbound</span>
@@ -385,7 +385,7 @@ export default function LandingExperience() {
                   <p style={s("margin:0;width:fit-content;max-width:85%;border-radius:16px;border-bottom-left-radius:4px;background:rgba(99,102,241,.16);border:1px solid rgba(99,102,241,.22);padding:9px 14px;color:#ffffff")}>Absolutely — tomorrow at 7:00 PM for four. May I have a name for the reservation?</p>
                 </div>
                 <div style={s("margin-top:18px;display:flex;flex-direction:column;gap:9px;border-top:1px solid #262629;padding-top:16px")}>
-                  <p style={s("margin:0;display:flex;align-items:center;gap:9px;font-size:12px;color:#4ade80")} data-check><span style={s("display:inline-flex")}><svg viewBox="0 0 16 16" width={15} height={15} fill="none"><path d="M3.5 8.4 6.6 11.5 12.5 4.7" stroke="#22c55e" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ strokeDasharray: 18 }} /></svg></span> Reservation booked · Fri 7:00 PM · 4 guests</p>
+                  <p style={s("margin:0;display:flex;align-items:center;gap:9px;font-size:12px;color:#2dd4ee")} data-check><span style={s("display:inline-flex")}><svg viewBox="0 0 16 16" width={15} height={15} fill="none"><path d="M3.5 8.4 6.6 11.5 12.5 4.7" stroke="#2dd4ee" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ strokeDasharray: 18 }} /></svg></span> Reservation booked · Fri 7:00 PM · 4 guests</p>
                   <p style={s("margin:0;display:flex;align-items:center;gap:9px;font-size:12px;color:#c8c8cc")}><Ic name="messageSquare" size={14} /> SMS confirmation queued</p>
                 </div>
               </div>
@@ -408,9 +408,9 @@ export default function LandingExperience() {
             <h2 style={s("margin:16px 0 0;font-family:" + DISPLAY + ";font-size:36px;font-weight:700;letter-spacing:-.01em")}>Get a call from our <span style={s(headGrad)}>AI receptionist</span></h2>
             <p style={s("margin:12px auto 0;max-width:470px;color:#c8c8cc;font-size:16px;line-height:1.6")}>Enter your number and Nova will call you in seconds. Try booking a table, placing an order, or asking a question — just like a real customer would.</p>
             {callStatus === "done" ? (
-              <div style={s("margin:28px auto 0;max-width:470px;border-radius:18px;border:1px solid rgba(34,197,94,.3);background:rgba(34,197,94,.1);padding:26px")}>
-                <Ic name="phoneCall" size={30} color="#4ade80" />
-                <p style={s("margin:12px 0 0;font-family:" + DISPLAY + ";font-size:18px;font-weight:600;color:#4ade80")}>Calling you now</p>
+              <div style={s("margin:28px auto 0;max-width:470px;border-radius:18px;border:1px solid rgba(45,212,238,.3);background:rgba(45,212,238,.1);padding:26px")}>
+                <Ic name="phoneCall" size={30} color="#2dd4ee" />
+                <p style={s("margin:12px 0 0;font-family:" + DISPLAY + ";font-size:18px;font-weight:600;color:#2dd4ee")}>Calling you now</p>
                 <p style={s("margin:6px 0 0;font-size:14px;line-height:1.55;color:#c8c8cc")}>Answer your phone — Nova is on the line. After the call, the booking and transcript appear in the dashboard.</p>
                 <button onClick={() => { setCallStatus("idle"); setPhone(""); }} style={s("margin-top:16px;height:36px;padding:0 16px;border-radius:9px;font-size:13px;font-weight:600;color:#ffffff;border:1px solid #34343b;background:rgba(26,26,30,.6);cursor:pointer")}>Call another number</button>
               </div>
@@ -589,7 +589,7 @@ export default function LandingExperience() {
             <div data-reveal data-reveal-delay="120" data-tilt style={s("padding:30px;border-radius:20px;" + tiltCard)}>
               {contactSent ? (
                 <div style={s("display:flex;min-height:300px;flex-direction:column;align-items:center;justify-content:center;text-align:center")}>
-                  <span style={s("display:flex;width:48px;height:48px;align-items:center;justify-content:center;border-radius:50%;background:rgba(34,197,94,.1);color:#4ade80")}><Ic name="check" size={24} /></span>
+                  <span style={s("display:flex;width:48px;height:48px;align-items:center;justify-content:center;border-radius:50%;background:rgba(45,212,238,.1);color:#2dd4ee")}><Ic name="check" size={24} /></span>
                   <h3 style={s("margin:16px 0 0;font-family:" + DISPLAY + ";font-size:18px;font-weight:600")}>Message received</h3>
                   <p style={s("margin:6px 0 0;max-width:280px;font-size:14px;line-height:1.55;color:#c8c8cc")}>Thanks for reaching out — our team will get back to you within one business day.</p>
                 </div>
