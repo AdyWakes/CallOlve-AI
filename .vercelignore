@@ -1,0 +1,12 @@
+# Not needed for the Next.js build — keeps uploads small and avoids
+# OneDrive file-lock errors on large binary assets.
+.git
+node_modules
+.next
+agent
+pitch
+pitch-assets
+docs
+.venv
+.logs
+*.exe
