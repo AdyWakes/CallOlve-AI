@@ -73,7 +73,7 @@ slides = [
         "body": [
             ("Team Name", "CallOlve AI"),
             ("Problem Statement", "Long wait times and scripted phone bots in companies and government services."),
-            ("Team Leader", "Adarsh"),
+            ("Team Leader", "Adarsh Kumar"),
         ],
     },
     {
